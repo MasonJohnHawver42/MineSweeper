@@ -44,12 +44,24 @@ class Cell extends JPanel {
     public Flagged(Cell c) {
       super(c);
       JButton b = new JButton("F");
+      b.setBackground(Color.YELLOW);
+      b.setForeground(Color.BLACK);
       b.addActionListener(this);
       c.add(b); c.revalidate(); c.repaint();
     }
 
     public void actionPerformed(ActionEvent e) {
       cell.state = new UnChecked(cell);
+    }
+  }
+
+  private class Exploded extends State {
+    public Exploded(Cell c) {
+      super(c);
+      JButton b = new JButton("B");
+      b.setBackground(Color.RED);
+      b.setForeground(Color.WHITE);
+      c.add(b); c.revalidate(); c.repaint();
     }
   }
 
@@ -67,9 +79,13 @@ class Cell extends JPanel {
         if (bombs == 0) { for (Cell n : ns) { if (n.state instanceof UnChecked) { n.check(); } } }
 
         label = Integer.toString(bombs);
-      } else { label = "B"; }
+      } else { cell.state = new Exploded(c); return; }
 
-      cell.add(new JLabel(label));
+      JButton b = new JButton(label);
+      b.setBackground(new Color(115, 101, 29));
+      b.setForeground(Color.BLACK);
+
+      cell.add(b);
       cell.revalidate(); cell.repaint();
     }
   }
@@ -79,6 +95,7 @@ class Cell extends JPanel {
     public UnChecked(Cell c) {
       super(c);
       JButton b = new JButton(" ");
+      b.setBackground(new Color(7, 173, 98));
       b.addActionListener(this);
       c.add(b); c.revalidate(); c.repaint();
 
@@ -97,6 +114,7 @@ class Cell extends JPanel {
     public UnInit(Cell c) {
       super(c);
       JButton b = new JButton(" ");
+      b.setBackground(Color.gray);
       b.addActionListener(this);
       c.add(b); c.revalidate(); c.repaint();
     }
